@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aujourd'hui, états vides · Départs & clubs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..700&family=Martian+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="systeme.css">
+</head>
+<body>
+<nav class="nav" aria-label="Navigation principale">
+  <a class="titre" href="aujourdhui.html">Départs &amp; clubs</a>
+  <a href="aujourdhui.html" aria-current="page">Aujourd'hui</a><a href="fiche-club.html">Clubs</a><a href="departs.html">Départs</a><a href="#">Commissions</a>
+</nav>
+
+<section class="panneau" aria-labelledby="t-rien">
+  <p class="etat">État · rien à relancer</p>
+  <h1 class="annonce" id="t-rien">Personne à relancer aujourd'hui</h1>
+  <p>Prochaine relance <span class="mot" aria-label="jeudi 17 septembre"><span class="f">1</span><span class="f">7</span> <span class="f">S</span><span class="f">E</span><span class="f">P</span></span> : Subaqua Nantes Erdre, appeler le responsable des sorties.</p>
+  <p>Bateau 2 · 21 mars a encore <span class="mot"><span class="f">1</span><span class="f">8</span></span> places libres, et 6 clubs n'ont jamais été appelés.</p>
+  <button class="bouton plein">Voir les clubs jamais appelés</button>
+</section>
+
+<div class="quai">
+  <main class="zone">
+    <p class="etat" style="color: var(--attenue)">État · premier lancement</p>
+    <h2 class="titre-zone">Aucun club pour l'instant</h2>
+    <p>Importe ta liste depuis un tableur : une ligne par club, avec au moins le nom et la ville. Les doublons te seront montrés avant l'import.</p>
+    <p class="gabarit" style="color: var(--lettre)">Club ; Ville ; Contact ; Téléphone ; Notes</p>
+    <div class="pied"><button class="bouton plein">Importer un tableur</button><button class="bouton">Ajouter un club à la main</button></div>
+
+    <hr style="border: 0; border-top: 1px solid var(--filet); margin: 32px 0 22px">
+
+    <p class="etat" style="color: var(--attenue)">État · chargement impossible</p>
+    <h2 class="titre-zone">Les relances n'ont pas pu être chargées</h2>
+    <p>La connexion a été coupée pendant le chargement. Les échanges déjà enregistrés sont conservés.</p>
+    <button class="bouton">Réessayer</button>
+  </main>
+
+  <aside class="cote" aria-labelledby="t-attente">
+    <p class="etat" style="color: var(--attenue)">État · en attente</p>
+    <h2 class="titre-zone" id="t-attente">Options qui expirent</h2>
+    <div class="opt" aria-busy="true">
+      <div class="compte mot clair"><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span></div>
+      <div class="meta">Chargement des options…</div>
+    </div>
+    <p class="exemple">Maquette : clubs et départs sont des exemples.</p>
+  </aside>
+</div>
+</body>
+</html>

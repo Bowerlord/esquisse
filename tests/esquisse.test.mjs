@@ -59,6 +59,16 @@ test("le noir avec un seul accent acide est détecté", () => {
   assert.ok(analyse(data).hits.some((h) => h.id === "noir-acide"));
 });
 
+test("le crème et terracotta est détecté", () => {
+  const data = { ...base, bodyBg: "rgb(244, 241, 234)", colors: [{ c: "rgb(196, 98, 60)", w: 40, kind: "text" }] };
+  assert.ok(analyse(data).hits.some((h) => h.id === "creme-terracotta"));
+});
+
+test("un blanc froid et un orange fluo ne sont pas du crème et terracotta", () => {
+  const data = { ...base, bodyBg: "rgb(239, 244, 245)", colors: [{ c: "rgb(242, 84, 27)", w: 40, kind: "text" }] };
+  assert.equal(analyse(data).hits.length, 0);
+});
+
 test("un parti pris assumé lève le marqueur", () => {
   const data = { ...base, bodyBg: "rgb(10, 10, 10)", colors: [{ c: "rgb(163, 255, 18)", w: 40, kind: "text" }] };
   assert.equal(analyse(data, { exempt: ["noir-acide"] }).hits.length, 0);
@@ -78,6 +88,15 @@ test("la fixture pleine de réflexes échoue sur les bons marqueurs", () => {
   for (const id of ["police-defaut", "degrade-violet", "verre-depoli", "rayon-unique", "cartes-ombrees", "tout-centre", "badge-pilule", "trio-icones", "formule-creuse", "faux-contenu"]) {
     assert.match(run.stdout, new RegExp(id), "marqueur attendu : " + id);
   }
+});
+
+test("une page qui défile de côté sur téléphone échoue avec --mobile, et passe sans", () => {
+  const avec = spawnSync(process.execPath, [script, join(here, "fixtures", "large.html"), "--mobile"], { encoding: "utf8" });
+  if (avec.status === 2) return;
+  assert.equal(avec.status, 1, avec.stdout + avec.stderr);
+  assert.match(avec.stdout, /debordement-telephone/);
+  const sans = spawnSync(process.execPath, [script, join(here, "fixtures", "large.html")], { encoding: "utf8" });
+  assert.equal(sans.status, 0, sans.stdout + sans.stderr);
 });
 
 test("la fixture sobre passe", () => {

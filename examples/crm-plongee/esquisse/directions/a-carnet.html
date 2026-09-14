@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Direction A · Carnet de plongée</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Public+Sans:wght@400;500;600&family=Zilla+Slab:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bureau: #D3DEE2;   /* le plan de travail, gris-bleu */
+    --page: #EDF2F3;     /* la page du carnet, papier bleuté des carnets FFESSM */
+    --encre: #17303D;    /* encre bleu nuit */
+    --encre-2: #4E6571;
+    --filet: #A7BAC1;    /* réglure */
+    --tampon: #573B83;   /* encre de tampon violette */
+    --palier: #A3253A;   /* rouge des paliers obligatoires : ce qui ne peut pas attendre */
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bureau); color: var(--encre); font: 15px/1.45 "Public Sans", sans-serif; }
+  button { font: inherit; color: inherit; background: none; cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--tampon); outline-offset: 2px; }
+
+  .carnet { max-width: 1260px; margin: 20px auto; background: var(--page); border: 1px solid var(--filet); display: grid; grid-template-columns: 1fr 340px; }
+  nav { grid-column: 1 / -1; display: flex; gap: 28px; align-items: baseline; padding: 14px 28px; border-bottom: 3px double var(--filet); }
+  nav .titre { font: 600 17px "Zilla Slab", serif; margin-right: auto; }
+  nav a { color: var(--encre-2); text-decoration: none; }
+  nav a[aria-current] { color: var(--encre); border-bottom: 2px solid var(--encre); }
+  nav kbd { font: 12px "Courier Prime", monospace; border: 1px solid var(--filet); padding: 0 4px; }
+
+  .journal { border-right: 3px double var(--filet); }
+  .ligne { display: grid; grid-template-columns: 150px 1fr; }
+  .marge { border-right: 1px solid var(--palier); padding: 16px 14px; font: 13px/1.35 "Courier Prime", monospace; color: var(--encre-2); }
+  .corps { padding: 16px 24px; }
+
+  .jour .marge { color: var(--encre); }
+  .jour .num { font: 600 64px/1 "Zilla Slab", serif; }
+  h1 { font: 600 30px/1.1 "Zilla Slab", serif; margin: 6px 0 4px; }
+  .bilan { font-family: "Courier Prime", monospace; color: var(--encre-2); }
+  h2 { font: 600 13px "Courier Prime", monospace; text-transform: uppercase; letter-spacing: .12em; margin: 0; color: var(--encre-2); }
+
+  .entree { border-top: 1px solid var(--filet); }
+  .entree .corps { display: grid; grid-template-columns: 1fr auto; gap: 6px 20px; align-items: start; }
+  .club { font: 600 21px/1.2 "Zilla Slab", serif; margin: 0; }
+  .meta { font: 13px "Courier Prime", monospace; color: var(--encre-2); }
+  .action { grid-column: 1; }
+  .action b { font-weight: 600; }
+  .action .etiquette { font: 700 11px "Courier Prime", monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--palier); margin-right: 6px; }
+  .tampon { grid-row: 1 / span 2; grid-column: 2; justify-self: end; transform: rotate(-4deg); border: 3px double var(--tampon); color: var(--tampon); border-radius: 3px; padding: 5px 9px; font: 700 11px/1.2 "Courier Prime", monospace; letter-spacing: .1em; text-transform: uppercase; text-align: center; opacity: .92; }
+  .tampon.vide { border-style: dashed; border-width: 2px; color: var(--encre-2); border-color: var(--encre-2); transform: rotate(2deg); }
+  .noter { grid-column: 1; justify-self: start; border-bottom: 1px solid var(--encre); padding: 0; margin-top: 4px; }
+
+  .saisie { background: #E2EAEC; }
+  .saisie .corps { display: block; }
+  .saisie h3 { font: 600 16px "Zilla Slab", serif; margin: 0 0 10px; }
+  .cases { display: flex; gap: 18px; font-family: "Courier Prime", monospace; margin-bottom: 10px; }
+  .case { display: inline-flex; align-items: center; gap: 6px; }
+  .case i { width: 14px; height: 14px; border: 1.5px solid var(--encre); display: inline-grid; place-items: center; font-style: normal; font-size: 12px; line-height: 1; }
+  textarea { width: 100%; min-height: 58px; border: 0; resize: vertical; font: 15px/29px "Courier Prime", monospace; color: var(--encre); padding: 0 2px; background: repeating-linear-gradient(transparent 0 28px, var(--filet) 28px 29px); }
+  .pied { display: flex; gap: 24px; align-items: baseline; margin-top: 10px; font-family: "Courier Prime", monospace; }
+  .pied u { text-decoration: none; border-bottom: 1px dotted var(--encre); padding: 0 6px; }
+  .enregistrer { border: 2px solid var(--encre); padding: 4px 14px; font-weight: 600; }
+
+  .expire .corps { display: flex; gap: 20px; align-items: center; }
+  .expire .date { border: 2px solid var(--palier); color: var(--palier); font: 700 12px "Courier Prime", monospace; letter-spacing: .08em; padding: 4px 8px; text-transform: uppercase; }
+
+  aside { padding: 16px 22px; }
+  aside h2 { margin: 6px 0 14px; }
+  .depart { border-top: 1px solid var(--filet); padding: 14px 0; }
+  .depart b { font: 600 18px "Zilla Slab", serif; }
+  .places { display: grid; grid-template-columns: repeat(10, 1fr); gap: 3px; margin: 10px 0 6px; max-width: 220px; }
+  .places span { aspect-ratio: 1; border: 1.5px solid var(--encre); }
+  .places .v { background: var(--encre); }
+  .places .o { border-color: var(--tampon); box-shadow: inset 0 0 0 3px var(--page), inset 0 0 0 10px var(--tampon); }
+  .legende { font: 12px "Courier Prime", monospace; color: var(--encre-2); }
+  .exemple { margin-top: 18px; font: 12px "Courier Prime", monospace; color: var(--encre-2); border-top: 1px dashed var(--filet); padding-top: 10px; }
+
+  @media (max-width: 900px) {
+    .carnet { grid-template-columns: 1fr; margin: 0; }
+    .journal { border-right: 0; }
+    .ligne { grid-template-columns: 1fr; }
+    .marge { border-right: 0; border-bottom: 1px solid var(--palier); padding-bottom: 6px; }
+    nav { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+<div class="carnet">
+  <nav aria-label="Navigation principale">
+    <span class="titre">Carnet de prospection</span>
+    <a href="#" aria-current="page">Aujourd'hui</a><a href="#">Clubs</a><a href="#">Départs</a><a href="#">Commissions</a>
+    <span class="meta">Rechercher <kbd>/</kbd></span>
+  </nav>
+
+  <main class="journal">
+    <div class="ligne jour">
+      <div class="marge"><div class="num">14</div>lundi<br>septembre</div>
+      <div class="corps">
+        <h2>Page du jour</h2>
+        <h1>Quatre clubs à relancer</h1>
+        <div class="bilan">Une option expire cette semaine.</div>
+      </div>
+    </div>
+
+    <article class="ligne entree">
+      <div class="marge">2 sept.<br>appel<br>président</div>
+      <div class="corps">
+        <p class="club">Les Mérous de Rouen</p>
+        <span class="tampon">Présenté<br>en bureau</span>
+        <div class="meta">Seine-Maritime · 42 membres · N2 à N3</div>
+        <div class="action"><span class="etiquette">Aujourd'hui</span><b>Demander la date du vote.</b> « Le bureau vote fin septembre. »</div>
+      </div>
+    </article>
+
+    <div class="ligne saisie">
+      <div class="marge">14 sept.<br>nouvelle entrée</div>
+      <div class="corps">
+        <h3>Noter un échange avec Les Mérous de Rouen</h3>
+        <div class="cases"><span class="case"><i>✕</i>Appel</span><span class="case"><i></i>Mail</span><span class="case"><i></i>Rencontre</span></div>
+        <label class="meta" for="note-merous">Ce qui s'est dit</label>
+        <textarea id="note-merous">Président joint, vote reporté au 3 octobre.</textarea>
+        <div class="pied"><span>Relancer le <u>03 / 10</u></span><button class="enregistrer">Enregistrer l'entrée</button><span class="meta">Échap pour annuler</span></div>
+      </div>
+    </div>
+
+    <article class="ligne entree">
+      <div class="marge">5 sept.<br>mail<br>resp. sorties</div>
+      <div class="corps">
+        <p class="club">Subaqua Nantes Erdre</p>
+        <span class="tampon">Premier<br>échange</span>
+        <div class="meta">Loire-Atlantique · 65 membres · N1 à N3 · nitrox</div>
+        <div class="action"><span class="etiquette">Aujourd'hui</span><b>Appeler le responsable des sorties.</b> Brochure reçue le 5.</div>
+        <button class="noter">Noter un échange</button>
+      </div>
+    </article>
+
+    <article class="ligne entree">
+      <div class="marge">27 août<br>rencontre</div>
+      <div class="corps">
+        <p class="club">CSP Côte d'Opale</p>
+        <span class="tampon">Option<br>posée</span>
+        <div class="meta">Pas-de-Calais · 30 membres · N2</div>
+        <div class="action"><span class="etiquette">Avant jeudi</span><b>Confirmer l'option de 8 places</b> sur Bateau 1 · 7 mars.</div>
+        <button class="noter">Noter un échange</button>
+      </div>
+    </article>
+
+    <article class="ligne entree">
+      <div class="marge">aucune<br>entrée</div>
+      <div class="corps">
+        <p class="club">Aqua Club Lyonnais</p>
+        <span class="tampon vide">À<br>contacter</span>
+        <div class="meta">Rhône · 80 membres · recommandé par CSP Côte d'Opale</div>
+        <div class="action"><span class="etiquette">Aujourd'hui</span><b>Premier appel.</b></div>
+        <button class="noter">Noter un échange</button>
+      </div>
+    </article>
+
+    <div class="ligne entree expire">
+      <div class="marge">options</div>
+      <div class="corps">
+        <span class="date">Expire jeu. 18 sept.</span>
+        <span>CSP Côte d'Opale · 8 places · Bateau 1 · 7 mars</span>
+      </div>
+    </div>
+  </main>
+
+  <aside aria-label="Départs à remplir">
+    <h2>Départs à remplir</h2>
+    <div class="depart">
+      <b>Bateau 1 · 7 mars</b>
+      <div class="meta">Atolls du Sud · 7 nuits · N2</div>
+      <div class="places" aria-label="8 vendues, 8 en option, 4 libres">
+        <span class="v"></span><span class="v"></span><span class="v"></span><span class="v"></span><span class="v"></span><span class="v"></span><span class="v"></span><span class="v"></span><span class="o"></span><span class="o"></span>
+        <span class="o"></span><span class="o"></span><span class="o"></span><span class="o"></span><span class="o"></span><span class="o"></span><span></span><span></span><span></span><span></span>
+      </div>
+      <div class="legende">8 vendues · 8 en option · 4 libres</div>
+    </div>
+    <div class="depart">
+      <b>Bateau 2 · 21 mars</b>
+      <div class="meta">Ari et Malé Sud · 10 nuits · N1 accepté</div>
+      <div class="places" aria-label="2 vendues, 18 libres">
+        <span class="v"></span><span class="v"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <div class="legende">2 vendues · 18 libres</div>
+    </div>
+    <div class="depart">
+      <b>Bateau 1 · 4 avril</b>
+      <div class="meta">Atolls du Nord · 7 nuits · N2</div>
+      <div class="places" aria-label="20 libres">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <div class="legende">20 libres</div>
+    </div>
+    <p class="exemple">Maquette : clubs, effectifs et départs sont des exemples.</p>
+  </aside>
+</div>
+</body>
+</html>

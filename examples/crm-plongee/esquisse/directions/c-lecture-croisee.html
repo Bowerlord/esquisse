@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Direction C · Lecture croisée</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@200;300;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --fond: #EFF4F5;       /* blanc froid d'écran d'ordinateur de plongée */
+    --plan: #FAFCFC;
+    --graphite: #1D2428;
+    --trait: #8E9BA1;
+    --leger: #CFD8DB;
+    --parachute: #F2541B;  /* l'orange du parachute de palier : seulement ce qui se fait maintenant */
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--fond); color: var(--graphite); font: 15px/1.45 "Instrument Sans", sans-serif; }
+  button { font: inherit; color: inherit; background: none; cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--parachute); outline-offset: 2px; }
+
+  .instrument { max-width: 1320px; margin: 0 auto; padding: 18px 32px 40px; }
+  nav { display: flex; gap: 26px; align-items: baseline; padding-bottom: 14px; border-bottom: 1px solid var(--graphite); }
+  nav .titre { margin-right: auto; font-weight: 600; }
+  nav a { color: var(--trait); text-decoration: none; }
+  nav a[aria-current] { color: var(--graphite); }
+
+  header.jour { display: grid; grid-template-columns: auto 1fr auto; gap: 24px; align-items: end; padding: 22px 0 18px; }
+  .gros { font: 200 104px/0.85 "Chivo Mono", monospace; letter-spacing: -.04em; }
+  .jour .sous { font: 300 15px "Chivo Mono", monospace; color: var(--trait); }
+  h1 { margin: 0 0 6px; font: 400 30px/1.15 "Instrument Sans", sans-serif; letter-spacing: -.01em; }
+  h1 em { font-style: normal; color: var(--parachute); }
+  .mode { font-size: 13px; color: var(--trait); text-align: right; }
+  .mode ul { list-style: none; margin: 4px 0 0; padding: 0; }
+  .mode li { padding-left: 14px; position: relative; color: var(--graphite); }
+  .mode li[aria-current]::before { content: ""; position: absolute; left: 0; top: 7px; width: 6px; height: 6px; border-radius: 50%; background: var(--graphite); }
+  .mode li:not([aria-current]) { color: var(--trait); }
+
+  .table { display: grid; grid-template-columns: minmax(300px, 1.25fr) repeat(3, 1fr); border-top: 1px solid var(--graphite); border-left: 1px solid var(--leger); background: var(--plan); }
+  .table > div { border-right: 1px solid var(--leger); border-bottom: 1px solid var(--leger); padding: 12px 14px; }
+  .coin { font: 300 12px/1.4 "Chivo Mono", monospace; color: var(--trait); display: flex; align-items: flex-end; }
+  .col b { display: block; font: 300 34px/1 "Chivo Mono", monospace; letter-spacing: -.03em; }
+  .col .it { font-size: 13px; color: var(--trait); margin: 4px 0 10px; }
+  .libres { display: flex; align-items: baseline; gap: 8px; }
+  .libres span:first-child { font: 200 44px/1 "Chivo Mono", monospace; }
+  .libres span:last-child { font: 300 12px "Chivo Mono", monospace; color: var(--trait); }
+  .regle { display: flex; gap: 3px; height: 16px; align-items: end; margin-top: 8px; }
+  .regle i { flex: 1; border-left: 1px solid var(--graphite); height: 100%; }
+  .regle i.o { border-left: 2px solid var(--parachute); }
+  .regle i.l { height: 40%; border-color: var(--trait); }
+
+  .club { display: grid; gap: 4px; }
+  .club p { margin: 0; font-weight: 600; font-size: 17px; }
+  .club .meta { font-size: 13px; color: var(--trait); }
+  .paliers { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--trait); }
+  .paliers i { width: 9px; height: 9px; border-radius: 50%; border: 1px solid var(--graphite); }
+  .paliers i.fait { background: var(--graphite); }
+  .club .suite { font-size: 14px; }
+  .club .suite.maintenant { color: var(--parachute); font-weight: 500; }
+
+  .case { font: 300 13px/1.35 "Chivo Mono", monospace; display: flex; flex-direction: column; justify-content: center; gap: 2px; }
+  .case .v { font: 500 13px "Chivo Mono", monospace; }
+  .case.non { color: var(--leger); }
+  .case.oui .v::before { content: "○ "; }
+  .case.opt { color: var(--parachute); }
+  .case.opt .v::before { content: "◉ "; }
+
+  .viseur { box-shadow: inset 0 1px 0 var(--parachute), inset 0 -1px 0 var(--parachute); }
+  .table > .viseur.club { box-shadow: inset 2px 0 0 var(--parachute), inset 0 1px 0 var(--parachute), inset 0 -1px 0 var(--parachute); }
+
+  .saisie { grid-column: 1 / -1; background: var(--fond); display: grid; grid-template-columns: auto 1fr auto; gap: 18px; align-items: start; padding: 16px 14px !important; }
+  .touches { display: flex; gap: 8px; }
+  .touche { width: 76px; height: 52px; border: 1px solid var(--graphite); border-radius: 10px; display: grid; place-items: center; font-size: 13px; background: var(--plan); }
+  .touche kbd { display: block; font: 300 11px "Chivo Mono", monospace; color: var(--trait); }
+  .touche[aria-pressed="true"] { background: var(--graphite); color: var(--plan); }
+  .touche[aria-pressed="true"] kbd { color: var(--leger); }
+  textarea { width: 100%; min-height: 52px; border: 0; border-bottom: 1px solid var(--graphite); background: transparent; font: 16px/1.4 "Instrument Sans", sans-serif; resize: vertical; }
+  .molette { display: grid; grid-template-columns: auto auto; gap: 4px 12px; align-items: center; font-size: 12px; color: var(--trait); }
+  .molette .rond { grid-row: span 2; width: 52px; height: 52px; border-radius: 50%; border: 1px solid var(--graphite); display: grid; place-items: center; font: 500 13px "Chivo Mono", monospace; color: var(--graphite); }
+  .molette button { border: 1px solid var(--graphite); border-radius: 4px; padding: 4px 10px; color: var(--graphite); font-weight: 500; }
+
+  .notes { display: flex; justify-content: space-between; margin-top: 12px; font: 300 12px "Chivo Mono", monospace; color: var(--trait); }
+
+  @media (max-width: 900px) {
+    .instrument { padding: 12px 16px; }
+    header.jour { grid-template-columns: 1fr; }
+    .mode { text-align: left; }
+    .table { grid-template-columns: 1fr; }
+    .coin, .col { display: none !important; }
+    .saisie { grid-template-columns: 1fr; }
+    nav { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+<div class="instrument">
+  <nav aria-label="Navigation principale">
+    <span class="titre">Clubs × départs</span>
+    <a href="#" aria-current="page">Aujourd'hui</a><a href="#">Clubs</a><a href="#">Départs</a><a href="#">Commissions</a>
+  </nav>
+
+  <header class="jour">
+    <div><div class="gros">14</div><div class="sous">lun · sept</div></div>
+    <div><h1><em>4 clubs</em> à relancer, lus contre 3 départs.</h1><div class="sous">Une option expire jeudi.</div></div>
+    <div class="mode">Lire
+      <ul><li aria-current="true">à relancer aujourd'hui</li><li>tous les clubs actifs</li></ul>
+    </div>
+  </header>
+
+  <div class="table" role="table" aria-label="Clubs à relancer contre départs à remplir">
+    <div class="coin">club ↓ &nbsp; départ →</div>
+    <div class="col"><b>07.03</b><div class="it">Bateau 1 · Atolls du Sud · 7 n · N2</div><div class="libres"><span>4</span><span>libres / 20</span></div>
+      <div class="regle"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="o"></i><i class="o"></i><i class="o"></i><i class="o"></i><i class="o"></i><i class="o"></i><i class="o"></i><i class="o"></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i></div></div>
+    <div class="col"><b>21.03</b><div class="it">Bateau 2 · Ari et Malé Sud · 10 n · N1 accepté</div><div class="libres"><span>18</span><span>libres / 20</span></div>
+      <div class="regle"><i></i><i></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i></div></div>
+    <div class="col"><b>04.04</b><div class="it">Bateau 1 · Atolls du Nord · 7 n · N2</div><div class="libres"><span>20</span><span>libres / 20</span></div>
+      <div class="regle"><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i></div></div>
+
+    <div class="club viseur">
+      <p>Les Mérous de Rouen</p>
+      <div class="meta">Seine-Maritime · 42 membres · N2 à N3</div>
+      <div class="paliers"><i class="fait"></i><i class="fait"></i><i class="fait"></i><i></i><i></i>&nbsp;présenté en bureau</div>
+      <div class="suite maintenant">Demander la date du vote</div>
+    </div>
+    <div class="case oui viseur"><span class="v">niveaux ok</span>4 places pour 42 membres</div>
+    <div class="case oui viseur"><span class="v">niveaux ok</span>18 places</div>
+    <div class="case oui viseur"><span class="v">niveaux ok</span>20 places, groupe entier</div>
+
+    <div class="saisie">
+      <div class="touches">
+        <button class="touche" aria-pressed="true"><span>Appel<kbd>A</kbd></span></button>
+        <button class="touche" aria-pressed="false"><span>Mail<kbd>M</kbd></span></button>
+        <button class="touche" aria-pressed="false"><span>Rencontre<kbd>R</kbd></span></button>
+      </div>
+      <textarea aria-label="Noter un échange avec Les Mérous de Rouen">Président joint, vote reporté au 3 octobre.</textarea>
+      <div class="molette"><span class="rond">03.10</span><span>relancer le</span><button>Enregistrer ↵</button></div>
+    </div>
+
+    <div class="club">
+      <p>Subaqua Nantes Erdre</p>
+      <div class="meta">Loire-Atlantique · 65 membres · N1 à N3 · nitrox</div>
+      <div class="paliers"><i class="fait"></i><i class="fait"></i><i></i><i></i><i></i>&nbsp;premier échange</div>
+      <div class="suite maintenant">Appeler le responsable des sorties</div>
+    </div>
+    <div class="case non"><span class="v">N1 exclus</span>4 places</div>
+    <div class="case oui"><span class="v">tous niveaux</span>18 places</div>
+    <div class="case non"><span class="v">N1 exclus</span>20 places</div>
+
+    <div class="club">
+      <p>CSP Côte d'Opale</p>
+      <div class="meta">Pas-de-Calais · 30 membres · N2</div>
+      <div class="paliers"><i class="fait"></i><i class="fait"></i><i class="fait"></i><i class="fait"></i><i></i>&nbsp;option posée</div>
+      <div class="suite">Confirmer l'option avant jeudi</div>
+    </div>
+    <div class="case opt"><span class="v">option 8 places</span>expire jeu. 18.09</div>
+    <div class="case oui"><span class="v">niveaux ok</span>18 places</div>
+    <div class="case oui"><span class="v">niveaux ok</span>20 places</div>
+
+    <div class="club">
+      <p>Aqua Club Lyonnais</p>
+      <div class="meta">Rhône · 80 membres · recommandé par CSP Côte d'Opale</div>
+      <div class="paliers"><i class="fait"></i><i></i><i></i><i></i><i></i>&nbsp;à contacter</div>
+      <div class="suite maintenant">Premier appel</div>
+    </div>
+    <div class="case non"><span class="v">niveaux ?</span>à demander</div>
+    <div class="case non"><span class="v">niveaux ?</span>à demander</div>
+    <div class="case non"><span class="v">niveaux ?</span>à demander</div>
+  </div>
+
+  <div class="notes"><span>○ compatible · ◉ option posée · gris : ne colle pas ou inconnu</span><span>Maquette : clubs, effectifs et départs sont des exemples.</span></div>
+</div>
+</body>
+</html>

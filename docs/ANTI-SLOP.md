@@ -83,6 +83,13 @@ choisis. Un parti pris écrit dans `esquisse/direction.md`, section
 | `formule-creuse` | « Transformez votre… », « Libérez le potentiel », « sans effort », « révolutionnaire », « unlock », « seamless » |
 | `faux-contenu` | Lorem ipsum, John Doe, « Votre texte ici », chiffres ronds inventés |
 
+### D'étape
+
+| Identifiant | Signature |
+|---|---|
+| `couleur-en-wireframe` | Une couleur saturée dans un wireframe (option `--wireframe`) |
+| `debordement-telephone` | La page défile de côté à 390 px de large (option `--mobile`) |
+
 ---
 
 ## Ce que le script ne voit pas

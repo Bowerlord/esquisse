@@ -4,6 +4,7 @@
 // Usage :
 //   node scripts/check-slop.mjs <dossier | fichier.html | http://url> [options]
 //     --wireframe          refuse toute couleur saturée (étape UX)
+//     --mobile             vérifie aussi à 390 px : aucune page ne défile de côté
 //     --captures <dossier> enregistre une capture pleine page par écran
 //     --exempt a,b         lève des marqueurs (sinon lus dans esquisse/direction.md)
 //     --report <fichier>   écrit le rapport JSON
@@ -18,10 +19,11 @@ import { pathToFileURL } from "node:url";
 // ---------------------------------------------------------------- arguments
 
 function parseArgs(argv) {
-  const opts = { targets: [], wireframe: false, captures: null, exempt: [], report: null };
+  const opts = { targets: [], wireframe: false, mobile: false, captures: null, exempt: [], report: null };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === "--wireframe") opts.wireframe = true;
+    else if (a === "--mobile") opts.mobile = true;
     else if (a === "--captures") opts.captures = argv[++i];
     else if (a === "--exempt") opts.exempt = (argv[++i] || "").split(",").map((s) => s.trim()).filter(Boolean);
     else if (a === "--report") opts.report = argv[++i];
@@ -207,8 +209,14 @@ export function analyse(data, { wireframe = false, exempt = [] } = {}) {
 
   const cream = { r: 244, g: 241, b: 234 };
   const serifHeading = /serif/i.test(data.headingFont) && !/sans-serif/i.test(data.headingFont);
-  const terracotta = accents.some((x) => { const h = toHsl(x.rgb); return h.h >= 5 && h.h <= 28 && h.l < 0.62; });
-  if (distance(bg, cream) < 18 && (serifHeading || terracotta)) {
+  // La terre cuite est un orange rompu. Un orange fluo (parachute de palier,
+  // signalétique) est saturé au-delà de 0,8 : c'est une autre couleur.
+  const terracotta = accents.some((x) => { const h = toHsl(x.rgb); return h.h >= 5 && h.h <= 28 && h.l < 0.62 && h.s < 0.8; });
+  // Le crème est un blanc CHAUD : rouge au-dessus du bleu. Un blanc froid à la
+  // même distance euclidienne n'a rien du cliché, et le premier essai réel
+  // (un fond #EFF4F5) l'a pris à tort.
+  const warm = bg.r >= bg.b + 5;
+  if (warm && distance(bg, cream) < 18 && (serifHeading || terracotta)) {
     add("creme-terracotta", "fond " + data.bodyBg + (terracotta ? ", accent terracotta" : ", titrage serif"));
   }
 
@@ -310,6 +318,19 @@ async function main() {
       if (opts.captures) {
         capture = join(resolve(opts.captures), t.name.replace(/[^\w.-]+/g, "_").replace(/\.html?$/, "") + ".png");
         await page.screenshot({ path: capture, fullPage: true });
+      }
+      // Au format téléphone, la page ne doit jamais défiler de côté. Un tableau
+      // dans son propre conteneur défilant est permis, la page entière non.
+      if (opts.mobile) {
+        await page.setViewportSize({ width: 390, height: 844 });
+        await page.waitForTimeout(150);
+        const width = await page.evaluate(() => document.documentElement.scrollWidth);
+        if (width > 391 && !exempt.includes("debordement-telephone")) {
+          hits.push({ id: "debordement-telephone", detail: "la page fait " + width + " px de large sur un écran de 390" });
+        }
+        if (opts.captures) {
+          await page.screenshot({ path: capture.replace(/\.png$/, "-telephone.png"), fullPage: true });
+        }
       }
       results.push({ name: t.name, hits, warnings, exempt, capture });
       await page.close();

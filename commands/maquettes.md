@@ -22,8 +22,10 @@ L'état vide de l'écran principal est une maquette à part entière, pas une no
 
 Pour chaque écran :
 
-1. `node <plugin>/scripts/check-slop.mjs esquisse/maquettes --captures esquisse/captures/maquettes`
-2. **Regarde la capture.** Pas le code : la capture
+1. `node <plugin>/scripts/check-slop.mjs esquisse/maquettes --mobile --captures esquisse/captures/maquettes`
+2. **Regarde les captures, bureau et téléphone.** Pas le code : les captures. Sur
+   téléphone, vérifie que ce que l'UX met en premier est bien au-dessus de la ligne
+   de flottaison : aucun script ne le voit
 3. **Test de substitution** : l'écran tient-il avec un autre client ? Si oui, où
    placer le détail que seul ce client aurait ?
 4. **Le miroir** : retire un accessoire

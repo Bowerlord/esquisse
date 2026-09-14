@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Direction B · Tableau des départs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..700&family=Martian+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --hall: #E8EDEC;     /* le hall : clair, froid, carrelage de gare */
+    --quai: #F6F8F7;
+    --encre: #0F2430;
+    --attenue: #56666D;
+    --tableau: #0D2937;  /* le panneau, bleu nuit lagon plutôt que noir */
+    --volet: #173A4B;
+    --lettre: #ECEEE4;
+    --jaune: #F0BC2C;    /* le jaune des panneaux de départ : ce qui est en option */
+    --filet: #C2CCCF;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--hall); color: var(--encre); font: 15px/1.45 "Archivo", sans-serif; font-stretch: 100%; }
+  button { font: inherit; color: inherit; background: none; cursor: pointer; border: 0; }
+  :focus-visible { outline: 2px solid var(--jaune); outline-offset: 2px; }
+
+  nav { display: flex; gap: 26px; align-items: center; padding: 12px 32px; font-stretch: 87%; }
+  nav .titre { font-weight: 700; letter-spacing: .04em; text-transform: uppercase; margin-right: auto; font-stretch: 75%; font-size: 18px; }
+  nav a { color: var(--attenue); text-decoration: none; }
+  nav a[aria-current] { color: var(--encre); font-weight: 600; }
+
+  .panneau { background: var(--tableau); color: var(--lettre); padding: 22px 32px 26px; }
+  .panneau header { display: flex; align-items: baseline; gap: 20px; margin-bottom: 14px; }
+  h1 { margin: 0; font: 700 34px/1 "Archivo", sans-serif; font-stretch: 62%; text-transform: uppercase; letter-spacing: .03em; }
+  .panneau .date { font: 13px "Martian Mono", monospace; color: #9DB3BD; }
+  .rangees { width: 100%; border-collapse: collapse; }
+  .rangees th { text-align: left; font: 600 11px "Martian Mono", monospace; letter-spacing: .08em; color: #8AA2AD; padding: 0 12px 8px 0; text-transform: uppercase; }
+  .rangees td { padding: 8px 12px 8px 0; border-top: 1px solid #214556; vertical-align: middle; }
+  .f { display: inline-grid; place-items: center; min-width: 19px; height: 28px; padding: 0 3px; margin-right: 2px; background: var(--volet); color: var(--lettre); font: 600 14px "Martian Mono", monospace; position: relative; border-radius: 2px; }
+  .f::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: var(--tableau); }
+  .f.o { color: var(--jaune); }
+  .f.l { color: #4F7384; }
+  .mot .f { min-width: 17px; }
+  .clubs-proposes { font-size: 13px; color: #B9C9D0; font-stretch: 87%; }
+  .clubs-proposes b { color: var(--lettre); font-weight: 600; }
+
+  .quai { display: grid; grid-template-columns: 1fr 360px; gap: 0; }
+  .relances { padding: 22px 32px; background: var(--quai); }
+  h2 { margin: 0 0 12px; font: 700 20px "Archivo", sans-serif; font-stretch: 70%; text-transform: uppercase; letter-spacing: .04em; }
+  .r { display: grid; grid-template-columns: 1.3fr 150px 1.2fr 150px; gap: 16px; padding: 14px 0; border-top: 1px solid var(--filet); align-items: start; }
+  .club { font: 600 19px/1.2 "Archivo", sans-serif; font-stretch: 87%; margin: 0; }
+  .meta { font-size: 13px; color: var(--attenue); }
+  .etape { display: inline-block; background: var(--tableau); color: var(--lettre); font: 600 10px/1 "Martian Mono", monospace; letter-spacing: .06em; text-transform: uppercase; padding: 5px 6px; }
+  .etape.o { color: var(--jaune); }
+  .quand { font: 600 11px "Martian Mono", monospace; text-transform: uppercase; letter-spacing: .06em; color: var(--attenue); }
+  .noter { border: 1.5px solid var(--encre); padding: 5px 10px; font-weight: 600; font-stretch: 87%; justify-self: end; }
+  .saisie { grid-column: 1 / -1; background: var(--hall); padding: 14px 16px; border-left: 4px solid var(--tableau); }
+  .choix { display: flex; gap: 0; margin: 8px 0; }
+  .choix button { border: 1.5px solid var(--encre); padding: 4px 12px; margin-right: -1.5px; font-stretch: 87%; }
+  .choix button[aria-pressed="true"] { background: var(--tableau); color: var(--lettre); border-color: var(--tableau); }
+  textarea { width: 100%; min-height: 54px; border: 1.5px solid var(--filet); background: var(--quai); font: 15px/1.4 "Archivo", sans-serif; padding: 8px; resize: vertical; }
+  .pied { display: flex; gap: 18px; align-items: center; margin-top: 8px; }
+  .pied .f { height: 24px; }
+  .enregistrer { background: var(--encre); color: var(--quai); padding: 6px 14px; font-weight: 600; }
+
+  .options { padding: 22px 28px; border-left: 1px solid var(--filet); }
+  .opt { border-top: 1px solid var(--filet); padding: 12px 0; }
+  .opt .compte { margin: 6px 0; }
+  .opt .compte .f { background: var(--tableau); }
+  .exemple { font-size: 12px; color: var(--attenue); margin-top: 20px; }
+
+  @media (max-width: 900px) {
+    .quai { grid-template-columns: 1fr; }
+    .r { grid-template-columns: 1fr; gap: 6px; }
+    .noter { justify-self: start; }
+    .panneau { overflow-x: auto; }
+    nav { flex-wrap: wrap; padding: 12px 16px; }
+  }
+</style>
+</head>
+<body>
+<nav aria-label="Navigation principale">
+  <span class="titre">Départs &amp; clubs</span>
+  <a href="#" aria-current="page">Aujourd'hui</a><a href="#">Clubs</a><a href="#">Départs</a><a href="#">Commissions</a>
+</nav>
+
+<section class="panneau" aria-label="Départs à remplir">
+  <header><h1>Départs à remplir</h1><span class="date">lundi 14 septembre</span></header>
+  <table class="rangees">
+    <tr><th>Départ</th><th>Bateau</th><th>Itinéraire</th><th>Places · V vendue · O option · libre</th><th>Libres</th><th>À proposer</th></tr>
+    <tr>
+      <td class="mot"><span class="f">0</span><span class="f">7</span> <span class="f">M</span><span class="f">A</span><span class="f">R</span></td>
+      <td>Bateau 1</td>
+      <td>Atolls du Sud · 7 nuits · N2</td>
+      <td><span class="f">V</span><span class="f">V</span><span class="f">V</span><span class="f">V</span><span class="f">V</span><span class="f">V</span><span class="f">V</span><span class="f">V</span><span class="f o">O</span><span class="f o">O</span><span class="f o">O</span><span class="f o">O</span><span class="f o">O</span><span class="f o">O</span><span class="f o">O</span><span class="f o">O</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span></td>
+      <td><span class="f">0</span><span class="f">4</span></td>
+      <td class="clubs-proposes">Option <b>CSP Côte d'Opale</b></td>
+    </tr>
+    <tr>
+      <td class="mot"><span class="f">2</span><span class="f">1</span> <span class="f">M</span><span class="f">A</span><span class="f">R</span></td>
+      <td>Bateau 2</td>
+      <td>Ari et Malé Sud · 10 nuits · N1 accepté</td>
+      <td><span class="f">V</span><span class="f">V</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span></td>
+      <td><span class="f">1</span><span class="f">8</span></td>
+      <td class="clubs-proposes"><b>Subaqua Nantes Erdre</b>, niveaux compatibles</td>
+    </tr>
+    <tr>
+      <td class="mot"><span class="f">0</span><span class="f">4</span> <span class="f">A</span><span class="f">V</span><span class="f">R</span></td>
+      <td>Bateau 1</td>
+      <td>Atolls du Nord · 7 nuits · N2</td>
+      <td><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span></td>
+      <td><span class="f">2</span><span class="f">0</span></td>
+      <td class="clubs-proposes"><b>Les Mérous de Rouen</b>, après le vote</td>
+    </tr>
+  </table>
+</section>
+
+<div class="quai">
+  <main class="relances">
+    <h2>À relancer aujourd'hui · 4</h2>
+
+    <article class="r">
+      <div><p class="club">Les Mérous de Rouen</p><div class="meta">Seine-Maritime · 42 membres · N2 à N3</div></div>
+      <div><span class="etape">Présenté en bureau</span></div>
+      <div><div class="quand">Appel · 2 sept.</div>Demander la date du vote. « Le bureau vote fin septembre. »</div>
+      <button class="noter" aria-expanded="true">Noter un échange</button>
+      <div class="saisie">
+        <strong>Noter un échange avec Les Mérous de Rouen</strong>
+        <div class="choix"><button aria-pressed="true">Appel</button><button aria-pressed="false">Mail</button><button aria-pressed="false">Rencontre</button></div>
+        <textarea aria-label="Ce qui s'est dit">Président joint, vote reporté au 3 octobre.</textarea>
+        <div class="pied"><span>Relancer le</span><span><span class="f">0</span><span class="f">3</span> <span class="f">O</span><span class="f">C</span><span class="f">T</span></span><button class="enregistrer">Enregistrer</button><span class="meta">Échap pour annuler</span></div>
+      </div>
+    </article>
+
+    <article class="r">
+      <div><p class="club">Subaqua Nantes Erdre</p><div class="meta">Loire-Atlantique · 65 membres · N1 à N3 · nitrox</div></div>
+      <div><span class="etape">Premier échange</span></div>
+      <div><div class="quand">Mail · 5 sept.</div>Appeler le responsable des sorties.</div>
+      <button class="noter">Noter un échange</button>
+    </article>
+
+    <article class="r">
+      <div><p class="club">CSP Côte d'Opale</p><div class="meta">Pas-de-Calais · 30 membres · N2</div></div>
+      <div><span class="etape o">Option posée</span></div>
+      <div><div class="quand">Rencontre · 27 août</div>Confirmer l'option de 8 places avant jeudi.</div>
+      <button class="noter">Noter un échange</button>
+    </article>
+
+    <article class="r">
+      <div><p class="club">Aqua Club Lyonnais</p><div class="meta">Rhône · 80 membres</div></div>
+      <div><span class="etape">À contacter</span></div>
+      <div><div class="quand">Aucun échange</div>Premier appel, recommandé par CSP Côte d'Opale.</div>
+      <button class="noter">Noter un échange</button>
+    </article>
+  </main>
+
+  <aside class="options" aria-label="Options qui expirent">
+    <h2>Options qui expirent</h2>
+    <div class="opt">
+      <div class="compte"><span class="f o">J</span><span class="f o">-</span><span class="f o">4</span></div>
+      <b>CSP Côte d'Opale</b>
+      <div class="meta">8 places · Bateau 1 · 7 mars · expire jeudi 18 septembre</div>
+    </div>
+    <p class="exemple">Maquette : clubs, effectifs et départs sont des exemples.</p>
+  </aside>
+</div>
+</body>
+</html>

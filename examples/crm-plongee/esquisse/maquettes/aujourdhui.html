@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aujourd'hui · Départs & clubs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..700&family=Martian+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="systeme.css">
+</head>
+<body>
+<nav class="nav" aria-label="Navigation principale">
+  <a class="titre" href="aujourdhui.html">Départs &amp; clubs</a>
+  <a href="aujourdhui.html" aria-current="page">Aujourd'hui</a><a href="fiche-club.html">Clubs</a><a href="departs.html">Départs</a><a href="#">Commissions</a>
+  <span class="meta">Rechercher un club <kbd>/</kbd></span>
+</nav>
+
+<section class="panneau" aria-labelledby="t-departs">
+  <div class="entete"><h1 class="titre-panneau" id="t-departs">Départs à remplir</h1><span class="date">lundi 14 septembre</span></div>
+  <div class="defile">
+  <table class="rangees">
+    <tr><th>Départ</th><th>Bateau</th><th>Itinéraire</th><th>Places · V vendue · O option · libre</th><th>Libres</th><th>À proposer</th></tr>
+    <tr>
+      <td class="mot"><span class="f">0</span><span class="f">7</span> <span class="f">M</span><span class="f">A</span><span class="f">R</span></td>
+      <td>Bateau 1</td>
+      <td>Atolls du Sud · 7 nuits · N2</td>
+      <td aria-label="8 vendues, 8 en option, 4 libres"><span class="f">V</span><span class="f">V</span><span class="f">V</span><span class="f">V</span><span class="f">V</span><span class="f">V</span><span class="f">V</span><span class="f">V</span><span class="f o">O</span><span class="f o">O</span><span class="f o">O</span><span class="f o">O</span><span class="f o">O</span><span class="f o">O</span><span class="f o">O</span><span class="f o">O</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span></td>
+      <td><span class="f">0</span><span class="f">4</span></td>
+      <td class="propose">Option <b>CSP Côte d'Opale</b></td>
+    </tr>
+    <tr>
+      <td class="mot"><span class="f">2</span><span class="f">1</span> <span class="f">M</span><span class="f">A</span><span class="f">R</span></td>
+      <td>Bateau 2</td>
+      <td>Ari et Malé Sud · 10 nuits · N1 accepté</td>
+      <td aria-label="2 vendues, 18 libres"><span class="f">V</span><span class="f">V</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span></td>
+      <td><span class="f">1</span><span class="f">8</span></td>
+      <td class="propose"><b>Subaqua Nantes Erdre</b>, niveaux compatibles</td>
+    </tr>
+    <tr>
+      <td class="mot"><span class="f">0</span><span class="f">4</span> <span class="f">A</span><span class="f">V</span><span class="f">R</span></td>
+      <td>Bateau 1</td>
+      <td>Atolls du Nord · 7 nuits · N2</td>
+      <td aria-label="20 libres"><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span><span class="f l">·</span></td>
+      <td><span class="f">2</span><span class="f">0</span></td>
+      <td class="propose"><b>Les Mérous de Rouen</b>, après le vote</td>
+    </tr>
+  </table>
+  </div>
+</section>
+
+<div class="quai">
+  <main class="zone">
+    <h2 class="titre-zone">À relancer aujourd'hui · 4</h2>
+
+    <article class="r">
+      <div><p class="club"><a href="fiche-club.html">Les Mérous de Rouen</a></p><div class="meta">Seine-Maritime · 42 membres · N2 à N3</div></div>
+      <div><span class="etape">Présenté en bureau</span></div>
+      <div><div class="quand">Appel · 2 sept.</div>Demander la date du vote. « Le bureau vote fin septembre. »</div>
+      <button class="bouton" aria-expanded="true" aria-controls="saisie-merous">Noter un échange</button>
+      <form class="saisie" id="saisie-merous" onsubmit="return false">
+        <strong>Noter un échange avec Les Mérous de Rouen</strong>
+        <div class="choix" role="group" aria-label="Type d'échange"><button type="button" aria-pressed="true">Appel</button><button type="button" aria-pressed="false">Mail</button><button type="button" aria-pressed="false">Rencontre</button></div>
+        <textarea aria-label="Ce qui s'est dit">Président joint, vote reporté au 3 octobre.</textarea>
+        <div class="pied"><span>Relancer le</span><span class="mot clair" aria-label="3 octobre"><span class="f">0</span><span class="f">3</span> <span class="f">O</span><span class="f">C</span><span class="f">T</span></span><button class="bouton plein">Enregistrer l'échange</button><span class="meta">Échap pour annuler</span></div>
+      </form>
+    </article>
+
+    <article class="r">
+      <div><p class="club"><a href="fiche-club.html">Subaqua Nantes Erdre</a></p><div class="meta">Loire-Atlantique · 65 membres · N1 à N3 · nitrox</div></div>
+      <div><span class="etape">Premier échange</span></div>
+      <div><div class="quand">Mail · 5 sept.</div>Appeler le responsable des sorties.</div>
+      <button class="bouton">Noter un échange</button>
+    </article>
+
+    <article class="r">
+      <div><p class="club"><a href="fiche-club.html">CSP Côte d'Opale</a></p><div class="meta">Pas-de-Calais · 30 membres · N2</div></div>
+      <div><span class="etape o">Option posée</span></div>
+      <div><div class="quand">Rencontre · 27 août</div>Confirmer l'option de 8 places avant jeudi.</div>
+      <button class="bouton">Noter un échange</button>
+    </article>
+
+    <article class="r">
+      <div><p class="club"><a href="fiche-club.html">Aqua Club Lyonnais</a></p><div class="meta">Rhône · 80 membres</div></div>
+      <div><span class="etape a-faire">À contacter</span></div>
+      <div><div class="quand">Aucun échange</div>Premier appel, recommandé par CSP Côte d'Opale.</div>
+      <button class="bouton">Noter un échange</button>
+    </article>
+  </main>
+
+  <aside class="cote" aria-labelledby="t-options">
+    <h2 class="titre-zone" id="t-options">Options qui expirent</h2>
+    <div class="opt">
+      <div class="compte mot clair" aria-label="dans 4 jours"><span class="f o">J</span><span class="f o">-</span><span class="f o">4</span></div>
+      <b>CSP Côte d'Opale</b>
+      <div class="meta">8 places · Bateau 1 · 7 mars · expire jeudi 18 septembre</div>
+    </div>
+    <p class="exemple">Maquette : clubs, effectifs et départs sont des exemples.</p>
+  </aside>
+</div>
+</body>
+</html>
