@@ -44,6 +44,18 @@ test("le hook autorise le code après validation des maquettes", () => {
   assert.equal(decide(join(dir, "src", "App.tsx")).allow, true);
 });
 
+test("le hook appelé comme par Claude Code refuse le code avec le code de sortie 2", () => {
+  const dir = mkdtempSync(join(tmpdir(), "esq-"));
+  mkdirSync(join(dir, "esquisse"));
+  const guard = join(here, "..", "scripts", "guard.mjs");
+  const input = JSON.stringify({ tool_input: { file_path: join(dir, "src", "App.tsx") } });
+  const refus = spawnSync(process.execPath, [guard], { input, encoding: "utf8" });
+  assert.equal(refus.status, 2, refus.stderr);
+  assert.match(refus.stderr, /maquettes ne sont pas valid/);
+  const conception = JSON.stringify({ tool_input: { file_path: join(dir, "esquisse", "maquettes", "a.html") } });
+  assert.equal(spawnSync(process.execPath, [guard], { input: conception, encoding: "utf8" }).status, 0);
+});
+
 // ------------------------------------------------------------ règles, sans navigateur
 
 const base = { fonts: { Newsreader: 300 }, textTotal: 300, centered: 0, radii: {}, radiusBlocks: 0, shadowCards: 0, glass: 0, gradients: [], colors: [], bodyBg: "rgb(255, 255, 255)", pill: null, trio: 0, headingFont: "Newsreader", text: "", html: "" };
