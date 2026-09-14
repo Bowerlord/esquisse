@@ -56,7 +56,10 @@ export function decide(filePath) {
   };
 }
 
-if (import.meta.url === `file://${process.argv[1].replace(/\\/g, "/")}` || process.argv[1]?.endsWith("guard.mjs")) {
+// Exécuté comme hook, et seulement dans ce cas : importé par les tests ou par
+// `node -e`, process.argv[1] est absent ou désigne un autre fichier.
+const entry = process.argv[1] ? resolve(process.argv[1]) : "";
+if (entry && entry === resolve(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1"))) {
   const input = readInput();
   const filePath = input?.tool_input?.file_path || input?.tool_input?.path;
   const verdict = decide(filePath);
