@@ -1,0 +1,16 @@
+{
+  "name": "esquisse",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Conception UI/UX contre l'AI slop, sous Claude Code.",
+  "license": "MIT",
+  "scripts": {
+    "slop": "node scripts/check-slop.mjs",
+    "test": "node --test tests/",
+    "browser:install": "npm install playwright && npx playwright install chromium"
+  },
+  "optionalDependencies": {
+    "playwright": "^1.62.1"
+  }
+}

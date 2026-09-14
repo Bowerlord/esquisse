@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Wireframe : Aujourd'hui, états vides</title>
+<style>
+  body { font: 14px/1.4 system-ui, sans-serif; margin: 0; background: #fff; color: #222; }
+  nav { display: flex; gap: 24px; padding: 12px 24px; border-bottom: 1px solid #999; }
+  nav b { margin-right: auto; }
+  section { padding: 32px 24px; border-bottom: 1px dashed #999; max-width: 640px; }
+  .etat { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: #777; }
+  h1 { font-size: 20px; margin: 8px 0; }
+  .btn { display: inline-block; border: 1px solid #555; padding: 4px 10px; margin-top: 12px; }
+  .muted { color: #777; }
+  pre { background: #eee; padding: 8px; font-size: 12px; }
+</style>
+</head>
+<body>
+<nav><b>CRM clubs</b><span>Aujourd'hui</span><span>Clubs</span><span>Départs</span><span>Commissions</span></nav>
+
+<section>
+  <div class="etat">État : rien à relancer</div>
+  <h1>Personne à relancer aujourd'hui.</h1>
+  <p>Prochaine relance jeudi 17 septembre : Subaqua Nantes Erdre, appeler le responsable des sorties.</p>
+  <p class="muted">Bateau 2 · 21 mars a encore 18 places libres. 6 clubs à l'étape « À contacter » n'ont jamais été appelés.</p>
+  <span class="btn">Voir les clubs jamais appelés</span>
+</section>
+
+<section>
+  <div class="etat">État : premier lancement</div>
+  <h1>Aucun club pour l'instant.</h1>
+  <p>Importe ta liste de clubs depuis un tableur. Une ligne par club, avec au moins le nom et la ville.</p>
+  <pre>Club ; Ville ; Contact ; Téléphone ; Notes</pre>
+  <span class="btn">Importer un tableur</span> <span class="muted">&nbsp; ou ajouter un club à la main</span>
+</section>
+
+<section>
+  <div class="etat">État : erreur de chargement</div>
+  <h1>Les relances n'ont pas pu être chargées.</h1>
+  <p>La connexion a été coupée. Tes notes déjà enregistrées ne sont pas perdues.</p>
+  <span class="btn">Réessayer</span>
+</section>
+</body>
+</html>

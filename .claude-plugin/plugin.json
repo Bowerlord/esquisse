@@ -1,0 +1,17 @@
+{
+  "name": "esquisse",
+  "displayName": "Esquisse",
+  "version": "0.1.0",
+  "description": "Design UI/UX workflow for any site, app or CRM, built against AI slop: UX first, real references, three directions to choose from, mockups before code.",
+  "author": {
+    "name": "Alexandre Bower"
+  },
+  "license": "MIT",
+  "keywords": ["design", "ux", "ui", "anti-slop", "mockups", "crm"],
+  "dependencies": [
+    {
+      "name": "frontend-design",
+      "marketplace": "claude-plugins-official"
+    }
+  ]
+}

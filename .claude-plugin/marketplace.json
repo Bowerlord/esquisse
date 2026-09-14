@@ -1,0 +1,13 @@
+{
+  "name": "esquisse-marketplace",
+  "owner": {
+    "name": "Bowerlord"
+  },
+  "plugins": [
+    {
+      "name": "esquisse",
+      "source": "./",
+      "description": "Design UI/UX workflow against AI slop."
+    }
+  ]
+}

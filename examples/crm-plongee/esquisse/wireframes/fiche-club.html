@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Wireframe : fiche club</title>
+<style>
+  body { font: 14px/1.4 system-ui, sans-serif; margin: 0; background: #fff; color: #222; }
+  nav { display: flex; gap: 24px; padding: 12px 24px; border-bottom: 1px solid #999; }
+  nav b { margin-right: auto; }
+  main { display: grid; grid-template-columns: 280px 1fr; gap: 32px; padding: 24px; }
+  h1 { font-size: 22px; margin: 0; }
+  h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: #555; margin: 24px 0 8px; }
+  dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin: 0; } dt { color: #777; }
+  .prochaine { border: 2px solid #333; padding: 12px; }
+  .btn { border: 1px solid #555; padding: 3px 8px; display: inline-block; margin: 8px 8px 0 0; }
+  ol { list-style: none; padding: 0; margin: 0; border-left: 1px solid #999; }
+  li { padding: 0 0 16px 16px; }
+  .date { font-size: 12px; color: #666; }
+  .etapes { display: flex; gap: 4px; font-size: 12px; margin-top: 8px; } .etapes span { border: 1px solid #bbb; padding: 2px 6px; } .etapes .ici { border-color: #222; font-weight: 600; }
+</style>
+</head>
+<body>
+<nav><b>CRM clubs</b><span>Aujourd'hui</span><span>Clubs</span><span>Départs</span><span>Commissions</span></nav>
+<main>
+<aside>
+  <h1>Les Mérous de Rouen</h1>
+  <div class="date">Club de plongée · Seine-Maritime</div>
+  <h2>Club</h2>
+  <dl><dt>Membres</dt><dd>42</dd><dt>Niveaux</dt><dd>N2 à N3, pas de nitrox</dd><dt>Voyage</dt><dd>un par an, au printemps</dd></dl>
+  <h2>Contacts</h2>
+  <dl><dt>Président</dt><dd>Contact 1 · 06 ·· ·· ·· ··</dd><dt>Sorties</dt><dd>Contact 2 · mail</dd></dl>
+  <h2>Recommandé par</h2>
+  <div>Aucun</div>
+</aside>
+<section>
+  <div class="etapes"><span>À contacter</span><span>Premier échange</span><span class="ici">Présenté en bureau</span><span>Option posée</span><span>Groupe confirmé</span></div>
+  <h2>Prochaine action</h2>
+  <div class="prochaine"><b>Aujourd'hui : demander la date du vote du bureau</b><br><span class="btn">Noter un échange</span><span class="btn">Poser une option</span><span class="btn">Changer la date</span></div>
+
+  <h2>Historique</h2>
+  <ol>
+    <li><div class="date">2 sept. · Appel · président</div>Le bureau vote le voyage 2027 fin septembre. Intéressé par un départ en mars, budget à confirmer.</li>
+    <li><div class="date">19 août · Mail · responsable des sorties</div>Brochure des deux bateaux envoyée, itinéraires adaptés au N2.</li>
+    <li><div class="date">12 août · Rencontre · salon</div>Premier contact. Le club est allé en Égypte les deux dernières années.</li>
+  </ol>
+
+  <h2>Options et voyages</h2>
+  <div class="date">Aucune option posée pour ce club.</div>
+</section>
+</main>
+</body>
+</html>
